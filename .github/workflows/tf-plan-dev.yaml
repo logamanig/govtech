@@ -1,4 +1,4 @@
-name: Terraform Plan
+name: Terraform Plan - Dev
 
 on:
   pull_request:
@@ -17,7 +17,7 @@ jobs:
   terraform:
     name: 'Terraform Plan'
     runs-on: ubuntu-latest
-    environment: ${environment}
+    environment: dev
     
     defaults:
       run:
