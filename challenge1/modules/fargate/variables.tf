@@ -32,6 +32,11 @@ variable "container_port" {
   default     = 3000
 }
 
+variable "host_port" {
+  description = "The host port"
+  default     = 80
+}
+
 variable "desired_count" {
   description = "Desired count of the service"
   default     = 1
@@ -43,11 +48,37 @@ variable "private_subnet_ids" {
 }
 
 variable "vpc_id" {
-  type = string
+  type        = string
   description = "The VPC id"
 }
 
 variable "public_target_group_arn" {
-  type = string
+  type        = string
   description = "The public target group arn"
+}
+
+variable "db_host" {
+  description = "The database host"
+  sensitive   = true
+}
+
+variable "db_user" {
+  description = "The database user"
+  sensitive   = true
+}
+
+variable "db_pwd" {
+  description = "The database password"
+  sensitive   = true
+}
+
+variable "db_name" {
+  description = "The database name"
+  sensitive   = true
+}
+
+variable "db_port" {
+  description = "The database port"
+  default     = 3306
+  sensitive   = true
 }
