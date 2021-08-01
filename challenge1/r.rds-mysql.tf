@@ -25,7 +25,7 @@ module "symbosis_my_sql_db" {
 
   iam_database_authentication_enabled = var.my_sql_iam_database_authentication_enabled
 
-  vpc_security_group_ids = [module.vpc.default_security_group_id]
+  vpc_security_group_ids = [aws_security_group.allow_db_access_sg.id]
 
   maintenance_window = "Mon:00:00-Mon:03:00"
   backup_window      = "03:00-06:00"
@@ -54,4 +54,16 @@ module "symbosis_my_sql_db" {
       value = "utf8mb4"
     }
   ]
+}
+
+resource "aws_security_group" "allow_db_access_sg"{
+  name = "allow_db_access_sg"
+  description = "Allow DB access"
+  vpc_id = module.vpc.vpc_id
+  ingress {
+    from_port = 3306
+    to_port   = 3306
+    protocol  = "tcp"
+    cidr_blocks = var.private_subnets
+  }
 }

@@ -8,7 +8,7 @@ resource "aws_ecs_service" "ecs_service" {
 
   network_configuration {
     subnets         = var.private_subnet_ids
-    security_groups = [aws_security_group.fargate_container_sg.id]
+    security_groups = [var.fargate_public_security_group_id]
   }
 
   capacity_provider_strategy {

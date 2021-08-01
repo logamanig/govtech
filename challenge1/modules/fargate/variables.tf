@@ -77,3 +77,7 @@ variable "db_port" {
   default     = 3306
   sensitive   = true
 }
+
+variable "fargate_public_security_group_id" {
+  description = "The fargate public security group id"
+}
