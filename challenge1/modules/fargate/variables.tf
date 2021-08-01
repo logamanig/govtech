@@ -14,7 +14,7 @@ variable "service_name" {
 
 variable "container_cpu" {
   description = "CPU share for the container"
-  default     = 256
+  default     = 125
 }
 
 variable "container_memory" {
