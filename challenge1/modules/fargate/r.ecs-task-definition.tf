@@ -14,9 +14,17 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
         "image" : var.image_repo,
         "memory" : var.container_memory,
         "name" : var.service_name
+        "environment" : [
+          { "name" : "DB_HOST", "value" : var.db_host },
+          { "name" : "DB_USER", "value" : var.db_user },
+          { "name" : "DB_PWD", "value" : var.db_pwd },
+          { "name" : "DB_PORT", "value" : var.db_port },
+          { "name" : "DB_NAME", "value" : var.db_name }, }
+        ],
         "portMappings" : [
           {
             "containerPort" : var.container_port,
+            "hostPort" : var.host_port
           }
         ]
       }
