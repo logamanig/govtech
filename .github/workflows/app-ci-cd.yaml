@@ -3,6 +3,8 @@ name: CI/CD for Node.js CRUD App
 on:
   push:
     branches: [ main ]
+    tags:
+      - 'v*.*.*'
 
 env:  
   tf_actions_working_dir: ./challenge1/nodejs-mysql-crud
