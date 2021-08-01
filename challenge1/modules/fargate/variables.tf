@@ -59,26 +59,26 @@ variable "public_target_group_arn" {
 
 variable "db_host" {
   description = "The database host"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "db_user" {
   description = "The database user"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "db_pwd" {
   description = "The database password"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "db_name" {
   description = "The database name"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "db_port" {
   description = "The database port"
   default     = 3306
-  sensitive = true
+  sensitive   = true
 }
