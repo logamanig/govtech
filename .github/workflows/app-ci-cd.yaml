@@ -4,8 +4,12 @@ on:
   push:
     branches: [ main ]
 
+env:  
+  tf_actions_working_dir: ./challenge1/nodejs-mysql-crud
+
 jobs:
   build:
+    name: Build Docker Image
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
@@ -19,13 +23,32 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            logamani/symbiosis
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          push: true
-          tags: user/app:latest
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
       
 
