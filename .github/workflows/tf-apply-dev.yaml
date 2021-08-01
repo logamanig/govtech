@@ -47,12 +47,6 @@ jobs:
       id: select-workspace
       run: terraform workspace select ${environment} || terraform workspace new ${environment}
 
-    - name: Terraform Plan
-      id: plan
-      run: terraform plan -no-color
-      continue-on-error: false
-
     - name: Terraform Apply
       id: apply
       run: terraform apply -auto-approve -no-color
-      continue-on-error: false

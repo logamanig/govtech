@@ -19,7 +19,7 @@ variable "container_cpu" {
 
 variable "container_memory" {
   description = "Memory limit for the container"
-  default     = 512
+  default     = 500
 }
 
 variable "image_repo" {
