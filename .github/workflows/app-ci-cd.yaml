@@ -1,0 +1,25 @@
+name: CI/CD for Node.js CRUD App
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      
+      # build dockerfile
+      - name: Build Dockerfile
+        uses: actions/docker-build@v1
+        with:
+          source: ./challenge1/nodejs-mysql-crud/
+          tag: "logamani/symbiosis:latest"
+          dockerfile: ./challenge1/nodejs-mysql-crud/Dockerfile
+          context: .
+
+      
+
+
+      
