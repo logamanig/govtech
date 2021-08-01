@@ -17,10 +17,10 @@ module "alb_public" {
       backend_port     = 80
       target_type      = "instance"
       targets = [
-        {
-          target_id = "fargate-ecs-service-target"
-          port      = 80
-        }
+        # {
+        #   target_id = "fargate-ecs-service-target"
+        #   port      = 3000
+        # }
       ]
     }
   ]
@@ -33,3 +33,4 @@ module "alb_public" {
     }
   ]
 }
+

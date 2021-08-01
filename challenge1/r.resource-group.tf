@@ -8,7 +8,6 @@ resource "aws_resourcegroups_group" "symbiosis-rg" {
   resource_query {
     query = <<JSON
 {
-  "Type": "TAG_FILTERS_1_0",
   "TagFilters": [
     {
       "Key": "app",
