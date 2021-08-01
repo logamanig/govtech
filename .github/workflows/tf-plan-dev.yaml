@@ -1,9 +1,6 @@
 name: Terraform Plan
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
@@ -41,6 +38,10 @@ jobs:
     - name: Terraform Validate
       id: validate
       run: terraform validate -no-color
+
+    - name: Terraform Select Workspace
+      id: select-workspace
+      run: terraform workspace select ${{ environment }} || terraform workspace new ${{ environment }}
 
     - name: Terraform Plan
       id: plan

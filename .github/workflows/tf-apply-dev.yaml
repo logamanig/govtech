@@ -1,0 +1,50 @@
+name: Terraform Plan
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  tf_actions_working_dir: ./challenge1
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID}}
+  AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION}}
+
+jobs:
+  terraform:
+    name: 'Terraform Plan'
+    runs-on: ubuntu-latest
+    environment: dev
+    
+    defaults:
+      run:
+        working-directory: ${{ env.tf_actions_working_dir }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: hashicorp/setup-terraform@v1
+
+    - name: Terraform fmt
+      id: fmt
+      run: terraform fmt -check
+      continue-on-error: true
+
+    - name: Terraform Init
+      id: init
+      run: terraform init
+
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -no-color
+      continue-on-error: false
+
+    - name: Terraform Apply
+      id: apply
+      run: terraform apply -no-color
+      continue-on-error: false
