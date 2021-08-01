@@ -1,10 +1,11 @@
 name: CI/CD for Node.js CRUD App
 
 on:
-  push:
-    branches: [ main ]
-    tags:
-      - 'v*.*.*'
+  # push:
+  #   branches: [ main ]
+  #   tags:
+  #     - 'v*.*.*'
+  workflow_dispatch:
 
 env:  
   tf_actions_working_dir: ./challenge1/nodejs-mysql-crud
