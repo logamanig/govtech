@@ -1,8 +1,11 @@
 name: CI/CD for Node.js CRUD App
 
 on:
-  push:
-    branches: [ main ]
+  # push:
+  #   branches: [ main ]
+  #   tags:
+  #     - 'v*.*.*'
+  workflow_dispatch:
 
 env:  
   tf_actions_working_dir: ./challenge1/nodejs-mysql-crud
@@ -12,6 +15,9 @@ jobs:
     name: Build Docker Image
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
         
@@ -40,6 +46,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
             type=sha
+            latest
 
       - name: Build and push
         id: docker_build
