@@ -14,12 +14,12 @@ variable "service_name" {
 
 variable "container_cpu" {
   description = "CPU share for the container"
-  default     = 125
+  default     = 256
 }
 
 variable "container_memory" {
   description = "Memory limit for the container"
-  default     = 250
+  default     = 512
 }
 
 variable "image_repo" {
