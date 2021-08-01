@@ -6,9 +6,9 @@ module "fargate" {
   private_subnet_ids         = module.vpc.private_subnets
   vpc_id                     = module.vpc.vpc_id
   public_target_group_arn    = module.alb_public.target_group_arns[0]
-  db_host = module.symbosis_my_sql_db.db_instance_address
-  db_port = module.symbosis_my_sql_db.db_instance_port
-  db_user = module.symbosis_my_sql_db.db_instance_username
-  db_pwd  = module.symbosis_my_sql_db.db_instance_password
-  db_name = module.symbosis_my_sql_db.db_instance_name
+  db_host                    = module.symbosis_my_sql_db.db_instance_address
+  db_port                    = module.symbosis_my_sql_db.db_instance_port
+  db_user                    = module.symbosis_my_sql_db.db_instance_username
+  db_pwd                     = module.symbosis_my_sql_db.db_instance_password
+  db_name                    = module.symbosis_my_sql_db.db_instance_name
 }

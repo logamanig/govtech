@@ -18,13 +18,12 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
           { "name" : "DB_HOST", "value" : var.db_host },
           { "name" : "DB_USER", "value" : var.db_user },
           { "name" : "DB_PWD", "value" : var.db_pwd },
-          { "name" : "DB_PORT", "value" : var.db_port },
+          { "name" : "DB_PORT", "value" : tostring(var.db_port) },
           { "name" : "DB_NAME", "value" : var.db_name }
         ],
         "portMappings" : [
           {
-            "containerPort" : var.container_port,
-            "hostPort" : var.host_port
+            "containerPort" : var.container_port
           }
         ]
       }
