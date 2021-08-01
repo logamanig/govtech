@@ -32,11 +32,6 @@ variable "container_port" {
   default     = 3000
 }
 
-variable "host_port" {
-  description = "The host port"
-  default     = 80
-}
-
 variable "desired_count" {
   description = "Desired count of the service"
   default     = 1
