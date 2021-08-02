@@ -1,6 +1,6 @@
 resource "aws_ecs_service" "ecs_service" {
-  name                               = var.service_name
-  cluster                            = module.ecs_cluster.ecs_cluster_id
+  name    = var.service_name
+  cluster = module.ecs_cluster.ecs_cluster_id
   # launch_type                        = "FARGATE"
   deployment_maximum_percent         = "200"
   deployment_minimum_healthy_percent = "75"
@@ -8,7 +8,7 @@ resource "aws_ecs_service" "ecs_service" {
 
   network_configuration {
     subnets         = var.private_subnet_ids
-    security_groups = [aws_security_group.fargate_container_sg.id]
+    security_groups = [var.fargate_public_security_group_id]
   }
 
   capacity_provider_strategy {

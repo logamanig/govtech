@@ -77,3 +77,17 @@ variable "db_port" {
   default     = 3306
   sensitive   = true
 }
+
+variable "fargate_public_security_group_id" {
+  description = "The fargate public security group id"
+}
+
+variable "autoscaling_min_capacity" {
+  description = "The autoscaling min capacity"
+  default     = 1
+}
+
+variable "autoscaling_max_capacity" {
+  description = "The autoscaling max capacity"
+  default     = 2
+}
