@@ -1,7 +1,7 @@
 module "fargate" {
   source = "./modules/fargate"
 
-  ecs_cluster_name                 = var.ecs_cluster_name
+  ecs_cluster_name                 = "${var.ecs_cluster_name}-${teraform.workspace}"
   container_insights_enabled       = var.container_insights_enabled
   private_subnet_ids               = module.vpc.private_subnets
   vpc_id                           = module.vpc.vpc_id

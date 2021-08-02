@@ -8,12 +8,17 @@ on:
   workflow_dispatch:
 
 env:  
-  tf_actions_working_dir: ./challenge1/nodejs-mysql-crud
+  image_name: ${{ secrets.DOCKER_IMAGE_NAME }}
 
 jobs:
   build:
     name: Build Docker Image
     runs-on: ubuntu-latest
+
+    outputs:
+      image_name: ${{ env.image_name }}
+      image_digest: steps.docker_build.digest
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -36,7 +41,7 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            logamani/symbiosis
+            ${{ env.image_name }}
           # generate Docker tags based on the following events/attributes
           tags: |
             type=schedule
@@ -59,7 +64,33 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      
+  deploy-dev:
+    name: Deploy to Dev environment
+    runs-on: ubuntu-latest
+    environment: dev
 
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
+      - name: Render Amazon ECS task definition
+        id: render-task-definition
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: web
+          image: ${{ env.image_name }}:${{ needs.build.outputs.image_digest }}
+
+      - name: Deploy to Amazon ECS service
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.render-task-definition.outputs.task-definition }}
+          service: symbiosis-fargate-dev
+          cluster: my-cluster
 
       
