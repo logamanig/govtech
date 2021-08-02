@@ -60,7 +60,7 @@ resource "aws_security_group" "allow_db_access_sg" {
   name        = "allow_db_access_sg"
   description = "Allow DB access"
   vpc_id      = module.vpc.vpc_id
-  
+
   ingress {
     from_port   = 3306
     to_port     = 3306
