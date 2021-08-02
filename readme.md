@@ -4,12 +4,15 @@ Note: For my billing reasons, DockerHub free account is used instead of AWS ECR.
 ### DevOps Flow
  #### 1. Infrastructure (IaC with Terraform)
  Unlike application CI/CD flow, Terraform to have separate pipeline for each environment as each environment to go through the manual Plan review. With that said, following flow to be replicated for each environment.
- ![Terraform CI/CD Flow](./challenge1/docs/img/architecture-diagram)
+
+ ![Terraform CI/CD Flow](./challenge1/docs/img/terraform-ci-cd-flow.png)
  
  #### 2. Application
- ![Application CI/CD Flow](./challenge1/docs/img/architecture-diagram)
+  CI/CD Flow for Application Deployment:
+ ![Application CI/CD Flow](./challenge1/docs/img/app-ci-cd-flow.png)
  
- ![Application CI/CD - GitHub Actions](./challenge1/docs/img/architecture-diagram)
+  Screenshot from GitHub Actions workflow
+ ![Application CI/CD - GitHub Actions](./challenge1/docs/img/app-github-actions-flow.png)
  
  ### Reason for choosing GitHub Action
 1. Though it is newbie in the CI/CD tooling arena, community support to add and maintaining Actions are impressive due to it's popularity among OpenSource community
