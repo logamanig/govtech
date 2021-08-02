@@ -79,6 +79,9 @@ jobs:
           # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
       - name: Render Amazon ECS task definition
         id: render-task-definition
         uses: aws-actions/amazon-ecs-render-task-definition@v1
