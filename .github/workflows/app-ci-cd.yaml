@@ -1,10 +1,10 @@
 name: CI/CD for Node.js CRUD App
 
 on:
-  # push:
-  #   branches: [ main ]
-  #   tags:
-  #     - 'v*.*.*'
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*.*.*'
   workflow_dispatch:
 
 env:  
@@ -17,7 +17,7 @@ jobs:
 
     outputs:
       image_name: ${{ env.image_name }}
-      image_digest: steps.docker_build.digest
+      image_digest: ${{ steps.docker_build.digest }}
       
     steps:
       - name: Checkout code
@@ -68,6 +68,7 @@ jobs:
     name: Deploy to Dev environment
     runs-on: ubuntu-latest
     environment: dev
+    needs: [ build ]
 
     steps:
       - name: Configure AWS Credentials
@@ -78,12 +79,15 @@ jobs:
           # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Render Amazon ECS task definition
         id: render-task-definition
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: ./challenge1/nodejs-mysql-crud/ecs-task-definition.json
-          container-name: web
+          container-name: symbiosis-service
           image: ${{ env.image_name }}:${{ needs.build.outputs.image_digest }}
 
       - name: Deploy to Amazon ECS service
@@ -93,4 +97,68 @@ jobs:
           service: symbiosis-service
           cluster: symbiosis-fargate-dev
 
-      
+  deploy-uat:
+      name: Deploy to UAT environment
+      runs-on: ubuntu-latest
+      environment: uat
+      needs: [ deploy-dev ]
+
+      steps:
+        - name: Configure AWS Credentials
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
+            aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Render Amazon ECS task definition
+          id: render-task-definition
+          uses: aws-actions/amazon-ecs-render-task-definition@v1
+          with:
+            task-definition: ./challenge1/nodejs-mysql-crud/ecs-task-definition.json
+            container-name: symbiosis-service
+            image: ${{ env.image_name }}:${{ needs.build.outputs.image_digest }}
+
+        - name: Deploy to Amazon ECS service
+          uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+          with:
+            task-definition: ${{ steps.render-task-definition.outputs.task-definition }}
+            service: symbiosis-service
+            cluster: symbiosis-fargate-uat     
+
+  deploy-prod:
+      name: Deploy to Prodcution environment
+      runs-on: ubuntu-latest
+      environment: prod
+      needs: [ deploy-uat ]
+
+      steps:
+        - name: Configure AWS Credentials
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
+            aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Render Amazon ECS task definition
+          id: render-task-definition
+          uses: aws-actions/amazon-ecs-render-task-definition@v1
+          with:
+            task-definition: ./challenge1/nodejs-mysql-crud/ecs-task-definition.json
+            container-name: symbiosis-service
+            image: ${{ env.image_name }}:${{ needs.build.outputs.image_digest }}
+
+        - name: Deploy to Amazon ECS service
+          uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+          with:
+            task-definition: ${{ steps.render-task-definition.outputs.task-definition }}
+            service: symbiosis-service
+            cluster: symbiosis-fargate-prod
