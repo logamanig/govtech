@@ -82,7 +82,7 @@ jobs:
         id: render-task-definition
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: task-definition.json
+          task-definition: ./challenge1/nodejs-mysql-crud/ecs-task-definition.json
           container-name: web
           image: ${{ env.image_name }}:${{ needs.build.outputs.image_digest }}
 
@@ -90,7 +90,7 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.render-task-definition.outputs.task-definition }}
-          service: symbiosis-fargate-dev
-          cluster: my-cluster
+          service: symbiosis-service
+          cluster: symbiosis-fargate-dev
 
       
