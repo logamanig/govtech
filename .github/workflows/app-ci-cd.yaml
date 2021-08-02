@@ -81,13 +81,13 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v2
-        
+
       - name: Render Amazon ECS task definition
         id: render-task-definition
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: ./challenge1/nodejs-mysql-crud/ecs-task-definition.json
-          container-name: web
+          container-name: symbiosis-service
           image: ${{ env.image_name }}:${{ needs.build.outputs.image_digest }}
 
       - name: Deploy to Amazon ECS service
