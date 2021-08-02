@@ -17,7 +17,7 @@ jobs:
 
     outputs:
       image_name: ${{ env.image_name }}
-      image_digest: steps.docker_build.digest
+      image_digest: ${{ steps.docker_build.digest }}
       
     steps:
       - name: Checkout code
