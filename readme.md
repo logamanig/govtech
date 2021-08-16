@@ -32,7 +32,8 @@ Note: For my billing reasons, DockerHub free account is used instead of AWS ECR.
 	b. **Terraform Apply - Dev** for Terraform Apply to provision the necessary resources including the Fargate Task and Service. After the successful completion of workflow, the NodeJs-MySQL app can be accessed with the provisioned Application Load Balancer public URL. This workflow will be auto-triggered on new commits in Main branch.
 
 	c. UAT and PROD infrastructure can also be provisioned with respective Plan and Apply workflow. it is recommended to use different AWS Account for each environment.
-	d. ** CI/CD for Node.js CRUD App** to deploy new application changes to across environments. Triggering this flow will auto-deploy the new version in Dev environment and the same version can be promoted to UAT and PROD environment with approval. Make sure the necessary resources are provisioned for the UAT and PROD using the respective Terraform environment workflows.
+	
+	d. **CI/CD for Node.js CRUD App** to deploy new application changes to across environments. Triggering this flow will auto-deploy the new version in Dev environment and the same version can be promoted to UAT and PROD environment with approval. Make sure the necessary resources are provisioned for the UAT and PROD using the respective Terraform environment workflows.
 
 **Challenge 2:**
 
