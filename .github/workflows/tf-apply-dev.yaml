@@ -1,9 +1,9 @@
 name: Terraform Apply - Dev
 
 on:
-  push:
-    branches:
-      - main
+  #push:
+  #  branches:
+  #    - main
   workflow_dispatch:
 
 env:
@@ -49,4 +49,4 @@ jobs:
 
     - name: Terraform Apply
       id: apply
-      run: terraform apply -auto-approve -no-color
+      run: terraform destroy -auto-approve -no-color
